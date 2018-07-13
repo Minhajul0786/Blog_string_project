@@ -1,0 +1,26 @@
+{% extends 'blogger/base.html' %}
+{% load staticfiles%}
+{% block javascript %}
+  <script>
+    $("#id_username").change(function () {
+      console.log( $(this).val() );
+    });
+  </script>
+{% endblock %}
+
+
+{% block body_block %}
+    <div class="jumbotron">
+       {% if registered %}
+        <h1>Thank you for Registering!</h1>
+       {% else %}
+        <h1>Register Here :</h1>
+            <form method="POST">  <!-- add action to move to blogs page -->
+                {{ user_form.as_p }}
+                {% csrf_token %}
+                <input type="submit" class="btn btn-primary" value="Register">
+            </form>
+        {% endif %}
+
+    </div>        
+{% endblock %}
