@@ -17,12 +17,12 @@
         <h1>Thank you for Registering!</h1>
        {% else %}
         <h1>Register Here :</h1>
-            <form method="POST">  <!-- add action to move to blogs page -->
+            <form method="POST" action="{% url 'blogger:display' %}">  <!-- add action to move to blogs page -->
                 {{ user_form.as_p }}
                 {% csrf_token %}
                 <input type="submit" class="btn btn-primary" value="Register">
             </form>
         {% endif %}
 
-    </div>        
+    </div>
 {% endblock %}

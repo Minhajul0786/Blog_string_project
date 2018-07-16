@@ -1,0 +1,15 @@
+{% extends 'blogger/base.html' %}
+{% load staticfiles %}
+{% block body_block %}
+    <div class="jumbotron">
+            <h1>Create Post</h1>
+            <br>
+            <h3>Hello {{first_name}}</h3>
+            <h4>Please write the content!</h4>
+            <form method="POST" id="form_id">
+                {% csrf_token %}
+                <textarea id="textbox" form="form_id" cols="75" rows="8" placeholder="Add text" name="content"></textarea>
+                <p><input type="submit" class="btn btn-primary" value="Post"></p>
+            </form>
+    </div>
+{% endblock %}

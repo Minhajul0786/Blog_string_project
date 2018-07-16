@@ -1,7 +1,8 @@
-from django import forms 
+from django import forms
 from django.contrib.auth.models import User
+from blogger.models import Blog
 
-class UserForm(forms.ModelForm):    
+class UserForm(forms.ModelForm):
     class Meta():
         model = User
         fields = ('first_name', 'last_name','username','email', 'password')
