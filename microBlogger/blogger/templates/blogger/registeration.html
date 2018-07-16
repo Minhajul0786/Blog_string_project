@@ -2,11 +2,13 @@
 {% load staticfiles%}
 {% block javascript %}
   <script>
-    $("#id_username").change(function () {
-      console.log( $(this).val() );
+   $(document).ready( function (){$("#id_username").change(function () {
+      alert( $(this).val() );
     });
+   });
   </script>
 {% endblock %}
+
 
 
 {% block body_block %}
