@@ -26,16 +26,18 @@ def populate(N=5):
     for item in range(N):
         user = random.choice(User.objects.all())
         fake_content = fakegen.text()
-        Blog.objects.get_or_create(username=user,content=fake_content)
+        fake_dt = fakegen.date_time_ad()
+        Blog.objects.get_or_create(username=user,content=fake_content,date_time=fake_dt)
 
     for item in range(N):
         user = random.choice(User.objects.all())
         blog = random.choice(Blog.objects.all())
         fake_content = fakegen.sentence(nb_words=6,variable_nb_words=True,ext_word_list=None)
-        Comment.objects.get_or_create(username=user,blogtext=blog,content=fake_content)
+        fake_dt = fakegen.date_time_ad()
+        Comment.objects.get_or_create(username=user,blogtext=blog,content=fake_content,date_time=fake_dt)
 
 if __name__=='__main__':
     print("populating script!")
-    add_user(3)
-    populate(5)
+    add_user(1)
+    populate(2)
     print("populating complete!")
