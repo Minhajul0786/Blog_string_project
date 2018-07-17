@@ -18,11 +18,32 @@ def logout_user(request):
     logout(request)
 
 def validate_username(request):
+    print ("this is validate user!!!!!!")
     username = request.GET.get('username', None)
     data = {
         'is_taken': User.objects.filter(username__iexact=username).exists()
     }
     return JsonResponse(data)
+
+def comment(request):
+    if request.user.is_authenticated :
+        username = request.user.username
+        user = User.objects.get(username=username)
+        if request.method == 'GET':
+            blog_id = request.GET['blog_id']
+            comment_text = request.GET['comment_text']
+            commentJson = {
+                'comment_txt' : comment_text,
+                'user' : username,
+            }
+            blog_obj = Blog.objects.get(pk=blog_id)
+            
+            if comment_text != '':
+                print("DATA SUBMITTED!!")
+                comment = Comment(username = user , blogtext = blog_obj , content = comment_text )
+                comment.save()
+
+    return JsonResponse(commentJson)
 
 def registeration(request):
     user_form = UserForm()
