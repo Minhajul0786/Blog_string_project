@@ -8,7 +8,7 @@
 
             <h1>Please login</h1>
 
-            <form method="POST" action="{% url 'blogger:display' %}">
+            <form method="POST">
                 {% csrf_token %}
                 <label for="username">Username:</label>
                 <input type="text" name="username" placeholder="Enter Username">

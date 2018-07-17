@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 
 from django.contrib.auth import authenticate , login, logout
 from django.http import HttpResponseRedirect, HttpResponse,JsonResponse
-from django.urls import reverse
+from django.urls import reverse,reverse_lazy
 
 from django.contrib.auth.decorators import login_required
 from blogger.models import Blog,Comment
@@ -50,16 +50,18 @@ def registeration(request):
     registered = False
 
     if request.method == "POST":
+        print('checking for user validity????')
         user_form = UserForm(data=request.POST)
         # profile_form = UserProfileInfoForm(data=request.POST)
 
         if user_form.is_valid():
+            print(user_form)
             user = user_form.save()
             user.set_password(user.password)
             user.save()
             registered = True
-        else:
-            print(user_form.error)
+            return HttpResponseRedirect(reverse_lazy('blogger:login'))
+            
     return render( request, 'blogger/registeration.html', {
                                             'user_form' : user_form,
                                             'registered'    : registered,
@@ -74,7 +76,7 @@ def loginUser(request):
         if user:
             if user.is_active:
                 login(request,user)
-                return HttpResponseRedirect(reverse('index'))
+                return HttpResponseRedirect(reverse_lazy('blogger:display'))
             else:
                 return HttpResponse('acount not active')
         else:
@@ -91,6 +93,8 @@ def display_posts(request):
     return render(request,'blogger/display.html',context = all_dict)
 
 def create_post(request):
+    request.user
+    
     if request.user.is_authenticated:
         username = request.user.username
         user = User.objects.get(username=username)
@@ -101,5 +105,5 @@ def create_post(request):
             b.save()
             return display_posts(request)
     else:
-        print("ERROR FORM INVALID!")
+        print("ERROR USER IS NOT AUTHENTICATED!!")
     return render(request,'blogger/create.html',{'first_name' : first_name})
