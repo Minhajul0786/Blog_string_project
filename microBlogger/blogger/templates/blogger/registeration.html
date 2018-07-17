@@ -1,16 +1,8 @@
 {% extends 'blogger/base.html' %}
 {% load staticfiles%}
- 
+
 
 {% block javascript %}
-    <!-- <script>
-    $("#id_username").change(function () {
-      alert( $(this).val() );
-        });
-    </script> -->
-
- 
-    
     <script>
         $("#id_username").change(function () {
             var username = $(this).val();
@@ -30,10 +22,8 @@
         });
   </script>
 
-  
+
 {% endblock %}
-
-
 
 {% block body_block %}
     <div class="jumbotron">
@@ -41,7 +31,7 @@
         <h1>Thank you for Registering!</h1>
        {% else %}
         <h1>Register Here :</h1>
-            <form method="POST" action="{% url 'blogger:display' %}">  <!-- add action to move to blogs page -->
+            <form method="POST">  <!-- add action to move to blogs page -->
                 {{ user_form.as_p }}
                 {% csrf_token %}
                 <input type="submit" class="btn btn-primary" value="Register">
@@ -50,3 +40,4 @@
 
     </div>
 {% endblock %}
+ <!-- action="{% url 'blogger:display' %}" -->
