@@ -4,8 +4,8 @@
     <div class="jumbotron">
             <h1>Create Post</h1>
             <br>
-            <h3>Hello {{first_name}}</h3>
-            <h4>Please write the content!</h4>
+            <h5>Hello <strong>{{first_name}} !</strong></h5>
+            <h5>Please write your content here.</h5>
             <form method="POST" id="form_id">
                 {% csrf_token %}
                 <textarea id="textbox" form="form_id" cols="75" rows="8" placeholder="Add text" name="content"></textarea>

@@ -19,7 +19,7 @@ from blogger import views
 from django.conf.urls import include
 
 urlpatterns = [
-    path('', views.index , name='index'), 
+    path('', views.index , name='index'),
     path('admin/', admin.site.urls),
     path('blog/', include('blogger.urls')),
 ]

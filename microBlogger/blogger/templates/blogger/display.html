@@ -19,20 +19,18 @@
                   console.log(commentJson)
                   var user_name = commentJson.user
                   var content = commentJson['comment_txt']
-                  //console.log(user_name, content, "comment_list"+blog_id)
-                  //var txt1 = $("<h6></h6>").text(user_name);
-                  //var txt2 = $("<li></li>").text(txt1,content);
-                  //$("#comments_list"+blog_id).append(txt2)
-                  //$("#comments_list"+blog_id).append( $('<li>').text(user_name+ ": "+content))
-                  $("#comments_list"+blog_id).append(
-                    $('<li/>').append(
-                      $( '<h6/>' , { text : user_name+ " :" } )
-                    )
-                    .append(
-                      $( '<span/>' , { text : content })
-                    )
-                  );
-                  $("#cmnt"+ blog_id).val("");
+                  if (content != '' )
+                  {
+                    $("#comments_list"+blog_id).append(
+                      $('<li/>').append(
+                        $( '<h6/>' , { text : user_name+ " :" } )
+                      )
+                      .append(
+                        $( '<span/>' , { text : content })
+                      )
+                    );
+                    $("#cmnt"+ blog_id).val("");
+                  }
                 }
             });
 
@@ -52,7 +50,7 @@
 
 {% block body_block %}
     <div class="jumbotron">
-        <p align="right"><a href="{% url 'blogger:create' %}">Create New Post!</a><p>
+        <p align="right"><a href="{% url 'blogger:create' %}"><u>Create New Post!</u></a><p>
         <h1>POSTS</h1><br>
         {% if blogs %}
           {% for b in blogs %}
