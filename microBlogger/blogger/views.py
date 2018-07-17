@@ -11,7 +11,7 @@ from blogger.models import Blog,Comment
 
 # Create your views here.
 def index(request):
-    return render(request, 'blogger/index.html', {})
+    return render(request,'blogger/index.html', {})
 
 @login_required
 def logout_user(request):
@@ -55,10 +55,10 @@ def loginUser(request):
                 login(request,user)
                 return HttpResponseRedirect(reverse('index'))
             else:
-                return HttpResponse('acount not active')
+                return HttpResponse('account not active')
         else:
             print('some one tries to login in and failed !')
-            print('USername: {} password{}'.format(username,password))
+            print('Username: {} password{}'.format(username,password))
             return HttpResponse('Invalid Login Details!!')
     else:
         return render(request, 'blogger/login.html' , {})
