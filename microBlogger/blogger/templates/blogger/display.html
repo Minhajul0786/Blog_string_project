@@ -1,24 +1,52 @@
 {% extends 'blogger/base.html' %}
 {% load staticfiles%}
 
+{% block javascript %}
+    <script>
+    $(".btn").click(function () {
+      var blog_id = $(this).attr("data-catid")
+      var comment_text = $("#cmnt"+ blog_id).val()
+      $.ajax({
+
+                type: "GET",
+                url: "{% url 'blogger:comment' %}",
+                data: {
+                    'blog_id': blog_id,
+                    'comment_text': comment_text,
+                },
+                dataType: 'json',
+                success: function(commentJson) {
+                  console.log(commentJson)
+                  var user_name = commentJson.user
+                  var content = commentJson['comment_txt']
+                  //console.log(user_name, content, "comment_list"+blog_id)
+                  //var txt1 = $("<h6></h6>").text(user_name);
+                  //var txt2 = $("<li></li>").text(txt1,content);
+                  //$("#comments_list"+blog_id).append(txt2)
+                  //$("#comments_list"+blog_id).append( $('<li>').text(user_name+ ": "+content))
+                  $("#comments_list"+blog_id).append(
+                    $('<li/>').append(
+                      $( '<h6/>' , { text : user_name+ " :" } )
+                    )
+                    .append(
+                      $( '<span/>' , { text : content })
+                    )
+                  );
+                  $("#cmnt"+ blog_id).val("");
+                }
+            });
+
+
+
+    });
+    </script>
 
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+{% endblock %}
 
 
 
@@ -31,19 +59,19 @@
             <h5>{{ b.username }}</h5>
             <p>{{ b.content }}</p>
               {% if comments %}
-              <ul>
+              <ul id = "comments_list{{b.pk}}">
                 {% for c in comments %}
                   {% if b == c.blogtext %}
                     <li><h6>{{ c.username }} :</h6>{{ c.content }}</li>
                   {% endif %}
                 {% endfor %}
-                <li>
+              </ul>
+              <ul>
                   <form method="post">
                     {% csrf_token %}
-                    <input type="text" name="comment" placeholder="Add comment">
-                    <input type="submit" id="comment{{b.id}}" data-catid="{{ b.id }}" class="btn btn-primary" value="Comment">
+                    <input type="text" class ="cmnt" name="comment" id='cmnt{{b.pk}}' placeholder="Add comment">
+                    <input type="button" class="btn btn-primary" value="Comment" id = "comment{{b.pk}}" data-catid="{{ b.pk }}">
                   </form>
-                </li>
               </ul>
               {% endif %}
               <br>
