@@ -16,6 +16,7 @@ def index(request):
 @login_required
 def logout_user(request):
     logout(request)
+    return HttpResponseRedirect(reverse('index'))
 
 def validate_username(request):
     print ("this is validate user!!!!!!")
@@ -37,7 +38,7 @@ def comment(request):
                 'user' : username,
             }
             blog_obj = Blog.objects.get(pk=blog_id)
-            
+
             if comment_text != '':
                 print("DATA SUBMITTED!!")
                 comment = Comment(username = user , blogtext = blog_obj , content = comment_text )
@@ -61,7 +62,7 @@ def registeration(request):
             user.save()
             registered = True
             return HttpResponseRedirect(reverse_lazy('blogger:login'))
-            
+
     return render( request, 'blogger/registeration.html', {
                                             'user_form' : user_form,
                                             'registered'    : registered,
@@ -82,7 +83,7 @@ def loginUser(request):
         else:
             print('some one tries to login in and failed !')
             print('Username: {} password{}'.format(username,password))
-            return HttpResponse('Invalid Login Details!!')
+            return render(request, 'blogger/login.html' , { 'error_message' : 'Invalid Login Details!!' })
     else:
         return render(request, 'blogger/login.html' , {})
 
@@ -93,8 +94,6 @@ def display_posts(request):
     return render(request,'blogger/display.html',context = all_dict)
 
 def create_post(request):
-    request.user
-    
     if request.user.is_authenticated:
         username = request.user.username
         user = User.objects.get(username=username)
