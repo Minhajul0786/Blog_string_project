@@ -6,8 +6,8 @@
     $(".btn").click(function () {
       var blog_id = $(this).attr("data-catid")
       var comment_text = $("#cmnt"+ blog_id).val()
-      $.ajax({  
-                
+      $.ajax({
+
                 type: "GET",
                 url: "{% url 'blogger:comment' %}",
                 data: {
@@ -17,26 +17,35 @@
                 dataType: 'json',
                 success: function(commentJson) {
                   console.log(commentJson)
-
                   var user_name = commentJson.user
                   var content = commentJson['comment_txt']
-                  console.log(user_name, content, "comment_list"+blog_id)
-                  $("#comments_list"+blog_id).append( $('<li>').append(
-                    $('<h6>')
-                  ).text(user_name+ ": "+content)
+                  //console.log(user_name, content, "comment_list"+blog_id)
+                  //var txt1 = $("<h6></h6>").text(user_name);
+                  //var txt2 = $("<li></li>").text(txt1,content);
+                  //$("#comments_list"+blog_id).append(txt2)
+                  //$("#comments_list"+blog_id).append( $('<li>').text(user_name+ ": "+content))
+                  $("#comments_list"+blog_id).append(
+                    $('<li/>').append(
+                      $( '<h6/>' , { text : user_name+ " :" } )
                     )
+                    .append(
+                      $( '<span/>' , { text : content })
+                    )
+                  );
+                  $("#cmnt"+ blog_id).val("");
                 }
             });
-    
-    
+
+
+
     });
     </script>
 
- 
-    
- 
 
-  
+
+
+
+
 {% endblock %}
 
 
@@ -56,13 +65,13 @@
                     <li><h6>{{ c.username }} :</h6>{{ c.content }}</li>
                   {% endif %}
                 {% endfor %}
-                <li>
+              </ul>
+              <ul>
                   <form method="post">
                     {% csrf_token %}
                     <input type="text" class ="cmnt" name="comment" id='cmnt{{b.pk}}' placeholder="Add comment">
-                    <input type="button" class="btn" value="Comment" id = "comment{{b.pk}}" data-catid="{{ b.pk }}">
+                    <input type="button" class="btn btn-primary" value="Comment" id = "comment{{b.pk}}" data-catid="{{ b.pk }}">
                   </form>
-                </li>
               </ul>
               {% endif %}
               <br>
