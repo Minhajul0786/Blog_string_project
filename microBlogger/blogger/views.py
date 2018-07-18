@@ -67,8 +67,39 @@ def registeration(request):
                                             'user_form' : user_form,
                                             'registered'    : registered,
                                             } )
+def display_posts(request):
+    if request.user.is_authenticated:
+        blog_list = Blog.objects.order_by('-date_time')
+        comment_list = Comment.objects.order_by('date_time')
+        all_dict = { 'blogs' : blog_list, 'comments' : comment_list }
+        return render(request,'blogger/display.html',context = all_dict)
+    else:
+        message_to_login = 'Please login first'
+        request.session['message_to_login'] = message_to_login
+        return HttpResponseRedirect(reverse_lazy('blogger:login'))
+
+
+def create_post(request):
+    first_name = ""
+    authenticated_ = False
+    print(request)
+    if request.user.is_authenticated:
+        authenticated_ = True
+        username = request.user.username
+        user = User.objects.get(username=username)
+        first_name = user.first_name
+        if request.method == 'POST' :
+            content = request.POST.get('content')
+            b = Blog.objects.create(username=user,content=content)
+            b.save()
+            return display_posts(request)
+    else:
+        return HttpResponseRedirect(reverse_lazy('blogger:login'))
+    return render(request,'blogger/create.html',{'first_name' : first_name})
+
 
 def loginUser(request):
+    
     if request.method == 'POST':
         username = request.POST.get('username')
         password = request.POST.get('password')
@@ -86,23 +117,3 @@ def loginUser(request):
             return render(request, 'blogger/login.html' , { 'error_message' : 'Invalid Login Details!!' })
     else:
         return render(request, 'blogger/login.html' , {})
-
-def display_posts(request):
-    blog_list = Blog.objects.order_by('-date_time')
-    comment_list = Comment.objects.order_by('date_time')
-    all_dict = { 'blogs' : blog_list, 'comments' : comment_list }
-    return render(request,'blogger/display.html',context = all_dict)
-
-def create_post(request):
-    if request.user.is_authenticated:
-        username = request.user.username
-        user = User.objects.get(username=username)
-        first_name = user.first_name
-        if request.method == 'POST' :
-            content = request.POST.get('content')
-            b = Blog.objects.create(username=user,content=content)
-            b.save()
-            return display_posts(request)
-    else:
-        print("ERROR USER IS NOT AUTHENTICATED!!")
-    return render(request,'blogger/create.html',{'first_name' : first_name})

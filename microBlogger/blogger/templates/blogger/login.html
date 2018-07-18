@@ -5,8 +5,10 @@
 
 
     <div class="jumbotron">
-
+            {% if message_from_display %}<h1><strong>{{ message_from_display }}</strong></h1>
+            {% else %}
             <h1>Please login</h1>
+            {% endif %}
             {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
             <form method="POST">
                 {% csrf_token %}
