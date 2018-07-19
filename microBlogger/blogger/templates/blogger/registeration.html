@@ -4,22 +4,25 @@
 
 {% block javascript %}
     <script>
-        $("#id_username").change(function () {
-            var username = $(this).val();
-
-            $.ajax({
-                url: "{% url 'blogger:validate_username' %}",
-                data: {
-                    'username': username
-                },
-                dataType: 'json',
-                success: function (data) {
-                    if (data.is_taken) {
-                        alert("A user with this username already exists.");
+        /* For avoiding any conflicts using self inoking function to rap the scope of $->jquerry .
+           Outside this function $ is either undefined or refers to some othe library */
+         
+        (function($){ $("#id_username").change(function () {
+                var username = this.value;
+                $.ajax({
+                    url: "{% url 'blogger:validate_username' %}",
+                    data: {
+                        'username': username
+                    },
+                    dataType: 'json',
+                    success: function (data) {
+                        if (data.is_taken) {
+                            alert("A user with this username already exists.");
+                        }
                     }
-                }
+                });
             });
-        });
+        })(jQuery);
   </script>
 
 
